@@ -1,9 +1,12 @@
 import React, { useState } from "react"
 import "bootstrap/dist/css/bootstrap.min.css";
 import './Header.css';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
+import {Navigate,
+  useNavigate
+} from 'react-router-dom'
 function Sign() {
   const [email, setEmail] = useState('')
       const [name, setName] = useState('')
@@ -44,11 +47,25 @@ function Sign() {
             formValidate = true;
         }
         return formValidate;
-    }
-    const onSubmit=(e) => {
-        e.preventDefault()
+  }
+    const navigate = useNavigate()
+
+    const onSubmit=async(e) => {
+      e.preventDefault()
+        try {
+        const response = await axios.post('http://localhost:8080/register',{ fullname: name,
+    lastname: name,
+    email: email,
+    username:name,
+    password: Password,
+    confirmpassword: Password});
+          console.log(response.data);
+                    navigate('/login')
+      } catch (error) {
+        console.error('Error sending data:', error);
+      }
         validate()
-    }
+  }
      const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -61,28 +78,24 @@ function Sign() {
                              <div className="form-group" >
                 <label>fist Name</label>
                 <input
-                  type="email"
-                  id="EmailInput"
-                  name="EmailInput"
+                  type="text"
                   className="form-control "
                   onChange={(e)=>setName(e.target.value)}
                 />
-                <small id="emailHelp" className="text-danger form-text">
+                {/* <small id="emailHelp" className="text-danger form-text">
                   {nameError}
-                </small>
+                </small> */}
                 </div>
                 <div>
               <label>last Name</label>
                 <input
-                  type="email"
-                  id="EmailInput"
-                  name="EmailInput"
+                  type="text"                 
                   className="form-control "
                   onChange={(e)=>setName(e.target.value)}
                 />
-                <small id="emailHelp" className="text-danger form-text">
+                {/* <small id="emailHelp" className="text-danger form-text">
                   {nameError}
-                </small>
+                </small> */}
                             </div>
               
                 <div className="form-group" >
@@ -102,14 +115,12 @@ function Sign() {
                  <label>Username</label>
                 <input
                   type="text"
-                  id="EmailInput"
-                  name="TextInput"
                   className="form-control "
                   onChange={(e)=>setName(e.target.value)}
                 />
-                <small id="emailHelp" className="text-danger form-text">
+                {/* <small id="emailHelp" className="text-danger form-text">
                   {nameError}
-                </small>
+                </small> */}
                             </div>
                              <div  className="form-group">
                 <label>Password</label>
