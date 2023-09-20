@@ -10,15 +10,15 @@ import Sign from './component/Sign';
 import { BrowserRouter ,Routes,Route, Router,useRoutes} from 'react-router-dom'
 
 function App() {
-  function AppRoutes() {
-  const routes = useRoutes(
-    [
-      { path: '/login', element: <Login /> },
-      { path: '/Sign', element: <Sign /> }
-    ]
-  )
-  return routes;
-}
+//   function AppRoutes() {
+//   const routes = useRoutes(
+//     [
+//       { path: '/login', element: <Login /> },
+//       { path: '/Sign', element: <Sign /> }
+//     ]
+//   )
+//   return routes;
+// }
   return (
      <BrowserRouter>
       <Routes>

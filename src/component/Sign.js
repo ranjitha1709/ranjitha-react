@@ -9,63 +9,98 @@ import {Navigate,
 } from 'react-router-dom'
 function Sign() {
   const [email, setEmail] = useState('')
-      const [name, setName] = useState('')
+  const [firstName, setfirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [userName, setUserName] = useState('')
   const [Password, setPassword] = useState('')
-        const [nameError, setNameError] = useState('')
-    const [emailError, setEmailError] = useState('')
-    const [PasswordError, setPasswordError] = useState('')
+    const [message, setMessage] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState('')
+   const [firstNameError, setFirstNameError] = useState('')
+  const [lastNameError, setLastNameError] = useState('')
+  const [userNameError, setUserNameError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [PasswordError, setPasswordError] = useState('')
+      const [confirmPasswordError, setConfirmPasswordError] = useState('')
   const [showPassword, setShowPassword] = useState(false);
 
-    const validate = (e) => {
-        // alert(1)
-        let formValidate = true;
-        if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-            formValidate = false;
-            setEmailError("Email not valid")
-            return false
-        }
-        else {
-            setEmailError('')
-            formValidate = true;
-        }
-            if (!Password.match(/^[a-zA-Z0-9@$!%*?&]{5,22}$/)) {
-            formValidate = false;
-            setPasswordError("Only Letters and length must best min 5 Chracters and Max 22 Chracters")
-            return false
-        }
-        else {
-            setPasswordError('')
-            formValidate = true;
-      }
-          if (!name.match(/^[A-Za-z]\\w{5,29}$/)) {
-            formValidate = false;
-            setNameError("length must best min 5 Chracters and Max 22 Chracters")
-            return false
-        }
-        else {
-            setNameError('')
-            formValidate = true;
-        }
-        return formValidate;
+   const validate = () => {
+  let formValid = true;
+
+  // Validate email
+  if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+    setEmailError("Email not valid");
+    formValid = false;
+  } else {
+    setEmailError('');
   }
+
+  // Validate password
+  if (!Password.match(/^[a-zA-Z0-9@$!%*?&]{5,22}$/)) {
+    setPasswordError("Only Letters and length must be at least 5 characters and at most 22 characters");
+    formValid = false;
+  } else {
+    setPasswordError('');
+  }
+
+  // Validate first name
+  if (!firstName.match(/^[A-Za-z]\w{2,29}$/)) {
+    setFirstNameError("First name cannot be empty");
+    formValid = false;
+  } else {
+    setFirstNameError('');
+  }
+
+  // Validate last name
+  if (!lastName.match(/^[A-Za-z]\w{0,29}$/)) {
+    setLastNameError("Last name cannot be empty");
+    formValid = false;
+  } else {
+    setLastNameError('');
+  }
+
+  // Validate username
+  if (!userName.match(/^[A-Za-z]\w{2,29}$/)) {
+    setUserNameError("Username cannot be empty");
+    formValid = false;
+  } else {
+    setUserNameError('');
+  }
+  if (Password !== confirmPassword) {
+    setPasswordError("Passwords do not match");
+    setConfirmPasswordError("Passwords do not match");
+    formValid = false;
+  } else {
+    setPasswordError('');
+    setConfirmPasswordError('');
+  }
+  return formValid;
+};
     const navigate = useNavigate()
 
     const onSubmit=async(e) => {
       e.preventDefault()
+      if (validate()) {
         try {
-        const response = await axios.post('http://localhost:8080/register',{ fullname: name,
-    lastname: name,
-    email: email,
-    username:name,
-    password: Password,
-    confirmpassword: Password});
-          console.log(response.data);
-                    navigate('/login')
-      } catch (error) {
-        console.error('Error sending data:', error);
-      }
-        validate()
-  }
+          const response = await axios.post('http://localhost:8080/register', {
+            fullname: firstName,
+            lastname: lastName,
+            email: email,
+            username: userName,
+            password: Password,
+            confirmpassword: Password
+          });
+          console.log(response.data.message);
+          if (response.data.message === "user exist") {
+    setMessage("User already exists");
+          }
+          else if (response.data.message === "Success") {
+            navigate("/login", { state: { id: email } })
+          }
+        }
+        catch (error) {
+          console.error('Error sending data:', error);
+        }
+      }  }
      const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -76,36 +111,36 @@ function Sign() {
                 <div className="col-md-4">
                         <form className="loginform" onSubmit={onSubmit}>
                              <div className="form-group" >
-                <label>fist Name</label>
+                <label>Fist Name</label>
                 <input
                   type="text"
                   className="form-control "
-                  onChange={(e)=>setName(e.target.value)}
+                    onChange={(e) => { setfirstName(e.target.value); setFirstNameError('') }}
                 />
-                {/* <small id="emailHelp" className="text-danger form-text">
-                  {nameError}
-                </small> */}
+                <small  className="text-danger form-text">
+                  {firstNameError}
+                </small>
                 </div>
                 <div>
-              <label>last Name</label>
+              <label>Last Name</label>
                 <input
-                  type="text"                 
-                  className="form-control "
-                  onChange={(e)=>setName(e.target.value)}
+                    type="text"
+                    className="form-control "
+                    onChange={(e) => { setLastName(e.target.value);setLastNameError('') }}
                 />
-                {/* <small id="emailHelp" className="text-danger form-text">
-                  {nameError}
-                </small> */}
+                <small id="emailHelp" className="text-danger form-text">
+                  {lastNameError}
+                </small>
                             </div>
               
                 <div className="form-group" >
                 <label>Email</label>
                 <input
-                  type="email"
-                  id="EmailInput"
-                  name="EmailInput"
-                  className="form-control "
-                  onChange={(e)=>setEmail(e.target.value)}
+                    type="email"
+                    id="EmailInput"
+                    name="EmailInput"
+                    className="form-control "
+                    onChange={(e) => { setEmail(e.target.value);setEmailError('') }}
                 />
                 <small id="emailHelp" className="text-danger form-text">
                   {emailError}
@@ -114,22 +149,22 @@ function Sign() {
                 <div>
                  <label>Username</label>
                 <input
-                  type="text"
-                  className="form-control "
-                  onChange={(e)=>setName(e.target.value)}
+                    type="text"
+                    className="form-control "
+                    onChange={(e) => { setUserName(e.target.value); setUserNameError('') }}
                 />
-                {/* <small id="emailHelp" className="text-danger form-text">
-                  {nameError}
-                </small> */}
+                <small id="emailHelp" className="text-danger form-text">
+                  {userNameError}
+                </small>
                             </div>
                              <div  className="form-group">
                 <label>Password</label>
                 <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="EmailInput"
-                  name="EmailInput"
-                  className="form-control "
-                  onChange={(e)=>setPassword(e.target.value)}
+                    type={showPassword ? 'text' : 'password'}
+                    id="EmailInput"
+                    name="EmailInput"
+                    className="form-control "
+                    onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }}
                 />
                 <button className="toggle-passwords" onClick={togglePasswordVisibility}>
                 <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
@@ -145,15 +180,17 @@ function Sign() {
                   id="EmailInput"
                   name="EmailInput"
                   className="form-control "
-                  onChange={(e)=>setPassword(e.target.value)}
+                  onChange={(e)=>{setConfirmPassword(e.target.value); setConfirmPasswordError('');}}
                 />
                 <button className="toggle-passwords" onClick={togglePasswordVisibility}>
                 <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
                 </button>  
                      <small id="passworderror" className="text-danger form-text">
-                  {PasswordError}
+                  {confirmPasswordError}
                 </small>
                 </div>
+                      {message && <div className="text-danger">{message}</div>}
+
             <button type="submit" className="btn btn-primary submit">
                 Register
               </button>

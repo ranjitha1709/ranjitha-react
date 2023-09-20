@@ -46,7 +46,7 @@ export function Login() {
           {/* <div className="card center"> */}
                 <div className="row d-flex justify-content-center ">
                 <div className="col-md-4">
-                <form className="loginform" onSubmit={onSubmit}>
+                <form className="loginform" onSubmit={onSubmit} >
                 <div className="form-group" >
                 <label>Email</label>
                 <input
