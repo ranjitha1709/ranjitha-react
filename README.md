@@ -68,3 +68,13 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+registration
+<img width="884" alt="image" src="https://github.com/ranjitha1709/ranjitha-react/assets/47353205/4bb6f29f-ef09-406e-aaf7-2c2e14de13e7">
+Login page
+<img width="941" alt="image" src="https://github.com/ranjitha1709/ranjitha-react/assets/47353205/e57956b3-05e1-439c-b43f-b64325d44b15">
+Databse image of registration
+<img width="766" alt="image" src="https://github.com/ranjitha1709/ranjitha-react/assets/47353205/9f426851-de4c-48db-bee9-1962e3635e1e">
+Error image of user already exist
+<img width="634" alt="image" src="https://github.com/ranjitha1709/ranjitha-react/assets/47353205/823d9b3f-69e1-420d-80d2-4abb65972275">
+
+
